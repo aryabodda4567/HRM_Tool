@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Employee Details | HRM System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f3f4f6;
+      color: #1f2937;
+    }
+
+    .card {
+      background-color: #ffffff;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      margin: 2rem auto;
+      max-width: 800px;
+      padding: 2rem;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid #d1d5db;
+      border-radius: 0.25rem;
+      font-size: 0.875rem;
+    }
+
+    .form-input:disabled {
+      background-color: #f3f4f6;
+      cursor: not-allowed;
+    }
+
+    .btn {
+      padding: 0.5rem 1rem;
+      border-radius: 0.25rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .btn-primary {
+      background-color: #3b82f6;
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background-color: #2563eb;
+    }
+
+    .btn-success {
+      background-color: #10b981;
+      color: #ffffff;
+    }
+
+    .btn-success:hover {
+      background-color: #059669;
+    }
+
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #ffffff;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      z-index: 50;
+      display: none;
+    }
+
+    @media (max-width: 640px) {
+      .card {
+        margin: 1rem;
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body class="p-4">
+<th:block th:replace="header.html"></th:block>
+
+<div class="card">
+
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold">Employee Details</h1>
+    <button class="btn btn-primary" id="editBtn">Edit</button>
+  </div>
+
+  <form id="employeeForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+    <div>
+      <label for="employeeEmail" class="block text-sm font-medium text-gray-700 mb-1">Employee Id</label>
+      <input type="email" id="employeeEmail" name="employeeEmail" th:value="${employee.data.employeeId}" class="form-input" readonly>
+    </div>
+
+    <div>
+      <label for="employeeName" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+      <input type="text" id="employeeName" name="employeeName" th:value="${employee.data.employeeName}" class="form-input" disabled>
+    </div>
+
+    <div>
+      <label for="employeeSurname" class="block text-sm font-medium text-gray-700 mb-1">Surname</label>
+      <input type="text" id="employeeSurname" name="employeeSurname" th:value="${employee.data.employeeSurname}" class="form-input" disabled>
+    </div>
+
+    <div>
+      <label for="employeeEmail" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+      <input type="email" id="employeeEmail" name="employeeEmail" th:value="${employee.data.employeeEmail}" class="form-input" readonly>
+    </div>
+
+    <div>
+      <label for="employeePhone" class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+      <input type="tel" id="employeePhone" name="employeePhone" th:value="${employee.data.employeePhone}" class="form-input" disabled>
+    </div>
+
+    <div class="md:col-span-2">
+      <label for="employeeAddress" class="block text-sm font-medium text-gray-700 mb-1">Address</label>
+      <input type="text" id="employeeAddress" name="employeeAddress" th:value="${employee.data.employeeAddress}" class="form-input" disabled>
+    </div>
+
+    <div>
+      <label for="employeeGender" class="block text-sm font-medium text-gray-700 mb-1">Gender</label>
+      <select id="employeeGender" name="employeeGender" class="form-input" disabled>
+        <option value="Male" th:selected="${employee.data.employeeGender == 'Male'}">Male</option>
+        <option value="Female" th:selected="${employee.data.employeeGender == 'Female'}">Female</option>
+        <option value="Other" th:selected="${employee.data.employeeGender == 'Other'}">Other</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="employeeDesignation" class="block text-sm font-medium text-gray-700 mb-1">Designation</label>
+      <input type="text" id="employeeDesignation" name="employeeDesignation" th:value="${employee.data.employeeDesignation}" class="form-input" disabled>
+    </div>
+
+    <div>
+      <label for="employeeDepartment" class="block text-sm font-medium text-gray-700 mb-1">Department</label>
+      <input type="text" id="employeeDepartment" name="employeeDepartment" th:value="${employee.data.employeeDepartment}" class="form-input" disabled>
+    </div>
+
+    <div>
+      <label for="employeeJobTitle" class="block text-sm font-medium text-gray-700 mb-1">Job Title</label>
+      <input type="text" id="employeeJobTitle" name="employeeJobTitle" th:value="${employee.data.employeeJobTitle}" class="form-input" disabled>
+    </div>
+
+    <div class="md:col-span-2">
+      <label for="employeeJobDescription" class="block text-sm font-medium text-gray-700 mb-1">Job Description</label>
+      <textarea id="employeeJobDescription" name="employeeJobDescription" th:text="${employee.data.employeeJobDescription}" class="form-input" rows="3" disabled></textarea>
+    </div>
+
+    <div>
+      <label for="employeeJobStatus" class="block text-sm font-medium text-gray-700 mb-1">Job Status</label>
+      <select id="employeeJobStatus" name="employeeJobStatus" class="form-input" disabled>
+        <option value="Full-time" th:selected="${employee.data.employeeJobStatus == 'Full-time'}">Full-time</option>
+        <option value="Part-time" th:selected="${employee.data.employeeJobStatus == 'Part-time'}">Part-time</option>
+        <option value="Contract" th:selected="${employee.data.employeeJobStatus == 'Contract'}">Contract</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="employeeSalary" class="block text-sm font-medium text-gray-700 mb-1">Salary</label>
+      <input type="number" id="employeeSalary" name="employeeSalary" th:value="${employee.data.employeeSalary}" class="form-input" disabled>
+    </div>
+
+    <div>
+      <label for="employeeBirthday" class="block text-sm font-medium text-gray-700 mb-1">Birthday</label>
+      <input type="date" id="employeeBirthday" name="employeeBirthday" th:value="${#dates.format(employee.data.employeeBirthday, 'yyyy-MM-dd')}" class="form-input" disabled>
+    </div>
+
+    <div>
+      <label for="employeeHireDate" class="block text-sm font-medium text-gray-700 mb-1">Hire Date</label>
+      <input type="date" id="employeeHireDate" name="employeeHireDate" th:value="${#dates.format(employee.data.employeeHireDate, 'yyyy-MM-dd')}" class="form-input" disabled>
+    </div>
+
+    <div>
+      <label for="employeePerDaySalary" class="block text-sm font-medium text-gray-700 mb-1">Per Day Salary</label>
+      <input type="number" id="employeePerDaySalary" name="employeePerDaySalary" th:value="${employee.data.employeePerDaySalary}" class="form-input" disabled>
+    </div>
+
+    <div class="md:col-span-2">
+      <button type="button" id="submitBtn" class="btn btn-success w-full" style="display:none;">Update Employee Details</button>
+    </div>
+  </form>
+</div>
+
+<!-- Popup -->
+<div id="popup" class="popup">
+  <h2 class="text-xl font-semibold text-green-600 mb-4">Updated Fields</h2>
+  <ul id="updatedFields" class="list-disc pl-5 mb-4"></ul>
+  <button class="btn btn-primary w-full" id="okBtn">OK</button>
+</div>
+
+<script>
+  const editBtn = document.getElementById('editBtn');
+  const submitBtn = document.getElementById('submitBtn');
+  const formInputs = document.querySelectorAll('.form-input');
+
+  // Enable editing on click of edit button
+  editBtn.addEventListener('click', () => {
+    formInputs.forEach(input => {
+      if (input.id !== 'employeeEmail') {
+        input.disabled = false;
+      }
+    });
+    submitBtn.style.display = 'block';
+    editBtn.style.display = 'none';
+  });
+
+  // Submit the form data
+  submitBtn.addEventListener('click', async () => {
+    const formData = Object.fromEntries(new FormData(document.getElementById('employeeForm')));
+
+    try {
+      const response = await fetch('/hrm/employee/', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (result.status === 1) {
+        alert("Data Updated")
+        location.reload()
+        formInputs.forEach(input => input.disabled = true);
+        submitBtn.style.display = 'none';
+        editBtn.style.display = 'block';
+      } else {
+        alert(result.message);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('An error occurred. Please try again.');
+    }
+  });
+
+  // Close popup on OK button click
+  document.getElementById('okBtn').addEventListener('click', () => {
+    document.getElementById('popup').style.display = 'none';
+  });
+</script>
+<th:block th:replace="footer.html"></th:block>
+
+</body>
+</html>

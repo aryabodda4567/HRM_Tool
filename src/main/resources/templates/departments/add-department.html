@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Department Management | HR Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/luxon/2.3.1/luxon.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            margin: 2rem auto;
+            max-width: 800px;
+            padding: 2rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background-color: #4a90e2;
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background-color: #3a7bc8;
+        }
+
+        .input-error {
+            border-color: #e53e3e;
+        }
+
+        .error-message {
+            color: #e53e3e;
+            font-size: 0.875rem;
+        }
+
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            flex: 1;
+            min-width: 200px;
+            margin-right: 1rem;
+        }
+
+        .form-group:last-child {
+            margin-right: 0;
+        }
+
+        @media (max-width: 768px) {
+            .form-group {
+                flex-basis: 100%;
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body class="p-4">
+<th:block th:replace="header.html"></th:block>
+<div class="card">
+    <h1 class="text-2xl font-bold mb-6">Department Management</h1>
+    <form id="departmentForm" class="space-y-4">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="departmentCode" class="block mb-2">Department Code *</label>
+                <input id="departmentCode" name="departmentCode" type="text" class="w-full p-2 border rounded" required maxlength="10" aria-describedby="departmentCodeError">
+                <div id="departmentCodeError" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="departmentName" class="block mb-2">Department Name *</label>
+                <input id="departmentName" name="departmentName" type="text" class="w-full p-2 border rounded" required maxlength="100" aria-describedby="departmentNameError">
+                <div id="departmentNameError" class="error-message"></div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="departmentDescription" class="block mb-2">Department Description</label>
+                <textarea id="departmentDescription" name="departmentDescription" class="w-full p-2 border rounded" maxlength="500" aria-describedby="departmentDescriptionError"></textarea>
+                <div id="departmentDescriptionError" class="error-message"></div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="employeesCount" class="block mb-2">Employees Count *</label>
+                <input id="employeesCount" name="employeesCount" type="number" min="0" class="w-full p-2 border rounded" required aria-describedby="employeesCountError">
+                <div id="employeesCountError" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="departmentBudget" class="block mb-2">Department Budget (USD) *</label>
+                <input id="departmentBudget" name="departmentBudget" type="number" step="0.01" min="0" class="w-full p-2 border rounded" required aria-describedby="departmentBudgetError">
+                <div id="departmentBudgetError" class="error-message"></div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="isActive" class="block mb-2">Department Status *</label>
+                <select id="isActive" name="isActive" class="w-full p-2 border rounded" required aria-describedby="isActiveError">
+                    <option value="">Select status</option>
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                </select>
+                <div id="isActiveError" class="error-message"></div>
+            </div>
+            <div class="form-group">
+                <label for="departmentManagerName" class="block mb-2">Department Manager Name *</label>
+                <input id="departmentManagerName" name="departmentManagerName" type="text" class="w-full p-2 border rounded" required maxlength="100" aria-describedby="departmentManagerNameError">
+                <div id="departmentManagerNameError" class="error-message"></div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="departmentShift" class="block mb-2">Department Shift *</label>
+                <select id="departmentShift" name="departmentShift" class="w-full p-2 border rounded" required aria-describedby="departmentShiftError">
+                    <option value="">Select shift</option>
+                    <option value="1">Morning (6AM - 2PM)</option>
+                    <option value="2">Afternoon (2PM - 10PM)</option>
+                    <option value="3">Night (10PM - 6AM)</option>
+                    <option value="4">Regular (9AM - 5PM)</option>
+                </select>
+                <div id="departmentShiftError" class="error-message"></div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-full mt-4">Submit</button>
+    </form>
+
+    <div id="responseMessage" class="mt-6"></div>
+</div>
+
+<script>
+    const DateTime = luxon.DateTime;
+
+    function validateForm() {
+        let isValid = true;
+        const fields = ['departmentCode', 'departmentName', 'employeesCount', 'departmentBudget', 'isActive', 'departmentManagerName', 'departmentShift'];
+
+        fields.forEach(field => {
+            const input = document.getElementById(field);
+            const errorElement = document.getElementById(`${field}Error`);
+
+            if (!input.value.trim()) {
+                isValid = false;
+                input.classList.add('input-error');
+                errorElement.textContent = 'This field is required.';
+            } else {
+                input.classList.remove('input-error');
+                errorElement.textContent = '';
+            }
+        });
+
+        return isValid;
+    }
+
+    document.getElementById("departmentForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        if (!validateForm()) {
+            return;
+        }
+
+        const formData = new FormData(this);
+        const jsonData = Object.fromEntries(formData.entries());
+
+        // Add timestamps
+        jsonData.createdDate = DateTime.now().toISO();
+        jsonData.modifiedDate = DateTime.now().toISO();
+
+        fetch('/hrm/departments/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '${_csrf.token}' // Assuming you're using CSRF protection
+            },
+            body: JSON.stringify(jsonData),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const responseMessage = document.getElementById("responseMessage");
+                alert("Department created")
+                // responseMessage.innerHTML = `<p class="text-green-600">Success: Department added successfully.</p>`;
+
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                const responseMessage = document.getElementById("responseMessage");
+                responseMessage.innerHTML = `<p class="text-red-600">Error: Unable to add department. Please try again later.</p>`;
+            });
+    });
+</script>
+<th:block th:replace="footer.html"></th:block>
+
+</body>
+</html>

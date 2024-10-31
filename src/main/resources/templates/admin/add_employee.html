@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Employee | HRM System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+    </style>
+</head>
+<body class="p-4">
+<th:block th:replace="header.html"></th:block>
+
+<div class="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6 transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+    <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Add Employee</h2>
+    <form id="employeeForm" class="space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label for="employeeName" class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                <input type="text" id="employeeName" name="employeeName" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 ease-in-out" required>
+            </div>
+            <div>
+                <label for="employeeSurname" class="block text-sm font-medium text-gray-700 mb-1">Surname</label>
+                <input type="text" id="employeeSurname"  name="employeeSurname" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 ease-in-out" required>
+            </div>
+            <div>
+                <label for="employeeEmail" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <input type="email" id="employeeEmail" name="employeeEmail" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 ease-in-out" required>
+            </div>
+            <div>
+                <label for="employeePhone" class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                <input type="tel" id="employeePhone" name="employeePhone" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 ease-in-out" required>
+            </div>
+            <div class="md:col-span-2">
+                <label for="employeeAddress" class="block text-sm font-medium text-gray-700 mb-1">Address</label>
+                <input type="text" id="employeeAddress" name="employeeAddress" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 ease-in-out" required>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Gender</label>
+                <div class="flex space-x-4">
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="employeeGender" value="Male" id="genderMale" class="form-radio" required>
+                        <span class="ml-2">Male</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="employeeGender" value="Female" id="genderFemale" class="form-radio">
+                        <span class="ml-2">Female</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="employeeGender" value="Other" id="genderOther" class="form-radio">
+                        <span class="ml-2">Other</span>
+                    </label>
+                </div>
+            </div>
+            <div>
+                <label for="employeeDesignation" class="block text-sm font-medium text-gray-700 mb-1">Designation</label>
+                <input type="text" id="employeeDesignation" name="employeeDesignation" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 ease-in-out" required>
+            </div>
+            <div>
+                <label for="employeeDepartment" class="block text-sm font-medium text-gray-700 mb-1">Department</label>
+                <select id="employeeDepartment" name="employeeDepartment" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 ease-in-out" required>
+                    <option value="">Loading departments...</option>
+                </select>
+            </div>
+            <div>
+                <label for="employeeJobTitle" class="block text-sm font-medium text-gray-700 mb-1">Job Title</label>
+                <input type="text" id="employeeJobTitle"  name="employeeJobTitle" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 ease-in-out" required>
+            </div>
+            <div class="md:col-span-2">
+                <label for="employeeJobDescription" class="block text-sm font-medium text-gray-700 mb-1">Job Description</label>
+                <textarea id="employeeJobDescription" name="employeeJobDescription" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 ease-in-out" rows="3" required></textarea>
+            </div>
+            <div>
+                <label for="employeeJobStatus" class="block text-sm font-medium text-gray-700 mb-1">Job Status</label>
+                <select id="employeeJobStatus" name="employeeJobStatus" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 ease-in-out" required>
+                    <option value="">Select Job Status</option>
+                    <option value="Full-time">Full-time</option>
+                    <option value="Part-time">Part-time</option>
+                    <option value="Contract">Contract</option>
+                </select>
+            </div>
+            <div>
+                <label for="employeeSalary" class="block text-sm font-medium text-gray-700 mb-1">Salary</label>
+                <input type="number" id="employeeSalary"  name="employeeSalary" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 ease-in-out" required>
+            </div>
+            <div>
+                <label for="employeePerDaySalary" class="block text-sm font-medium text-gray-700 mb-1">Salary per Day</label>
+                <input type="number" id="employeePerDaySalary" name="employeePerDaySalary" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 ease-in-out" required>
+            </div>
+            <div>
+                <label for="employeeBirthday" class="block text-sm font-medium text-gray-700 mb-1">Birthday</label>
+                <input type="date" id="employeeBirthday" name="employeeBirthday" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 ease-in-out" required>
+            </div>
+            <div>
+                <label for="employeeHireDate" class="block text-sm font-medium text-gray-700 mb-1">Hire Date</label>
+                <input type="date" id="employeeHireDate" name="employeeHireDate" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 ease-in-out" required>
+            </div>
+        </div>
+        <div id="responseMessage" class="text-center mt-4"></div>
+        <div class="flex justify-center space-x-4 mt-6">
+            <button type="submit" class="btn btn-primary px-4 py-2 bg-blue-500 text-white hover:bg-blue-600 rounded-md font-medium transition duration-200 ease-in-out">Add Employee</button>
+            <button type="button" id="clearButton" class="btn btn-danger px-4 py-2 bg-red-500 text-white hover:bg-red-600 rounded-md font-medium transition duration-200 ease-in-out">Clear</button>
+        </div>
+    </form>
+</div>
+
+
+<script>
+
+
+
+
+    document.getElementById('employeeForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        // Prepare form data
+        const formData = new FormData(this);
+        console.log()
+        const jsonData = {};
+        formData.forEach((value, key) => {
+            jsonData[key] = value;
+        });
+
+        // Send data to the server
+        fetch('../employee/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(jsonData),
+        })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('responseMessage').innerText = data.message;
+                alert(data.message)
+
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('responseMessage').innerText = 'An error occurred. Please try again.';
+            });
+    });
+
+    // Clear button functionality
+    document.getElementById('clearButton').addEventListener('click', function() {
+        document.getElementById('employeeForm').reset();
+        document.getElementById('responseMessage').innerText = '';
+    });
+
+
+
+
+
+    // Fetch departments from API and populate dropdown
+    document.addEventListener("DOMContentLoaded", function() {
+        fetchDepartments();
+    });
+
+  function  fetchDepartments() {
+        fetch('/hrm/utility/get-department-codes-and-names') // Replace with your actual API endpoint
+            .then(response => response.json())
+            .then(response => {
+                const departmentSelect = document.getElementById('employeeDepartment');
+                departmentSelect.innerHTML = ''; // Clear existing options
+
+                // Add an initial empty option
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.textContent = 'Select Department';
+                departmentSelect.appendChild(defaultOption);
+
+                // Extract department IDs and names
+                const departmentIds = response.data[0]; // Array of department IDs
+                const departmentNames = response.data[1]; // Array of department names
+
+                // Check if both arrays have the same length
+                if (departmentIds.length === departmentNames.length) {
+                    for (let i = 0; i < departmentIds.length; i++) {
+                        const option = document.createElement('option');
+                        option.value = departmentIds[i]; // Set the ID as the option value
+                        option.textContent = departmentNames[i]; // Set the name as the option text
+                        departmentSelect.appendChild(option);
+                    }
+                } else {
+                    console.error('Mismatch between department IDs and names');
+                    // Handle the error appropriately
+                    const errorOption = document.createElement('option');
+                    errorOption.value = '';
+                    errorOption.textContent = 'Error: Department data mismatch';
+                    departmentSelect.appendChild(errorOption);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching departments:', error);
+                document.getElementById('employeeDepartment').innerHTML = '<option value="">Error loading departments</option>';
+            });
+    }
+
+
+    document.getElementById('employeeForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        // Handle form submission logic here
+        // You can use FormData to send the form data via fetch or XMLHttpRequest
+    });
+
+    document.getElementById('clearButton').addEventListener('click', function() {
+        document.getElementById('employeeForm').reset();
+        // Reset any additional fields if necessary
+    });
+</script>
+<th:block th:replace="footer.html"></th:block>
+
+</body>
+</html>

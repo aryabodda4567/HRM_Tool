@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HRM Admin Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
+        }
+
+        .login-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border: 1px solid #e5e5e5;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-field {
+            background-color: #f0f4f8;
+            border: 1px solid #d9e2ec;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .input-field:focus {
+            background-color: #ffffff;
+            border-color: #3182ce;
+            box-shadow: 0 0 0 2px rgba(49, 130, 206, 0.2);
+        }
+
+        .login-btn {
+            background: #3182ce;
+            transition: all 0.3s ease;
+        }
+
+        .login-btn:hover {
+            background: #2c5282;
+        }
+
+        .hr-icon {
+            fill: #3182ce;
+        }
+
+        .error-msg {
+            color: red;
+        }
+
+        .success-msg {
+            color: green;
+        }
+    </style>
+</head>
+<body class="h-screen flex items-center justify-center p-4">
+<div class="login-container p-8 rounded-lg w-full max-w-md text-gray-800">
+    <div class="flex justify-center mb-6">
+        <svg class="hr-icon w-16 h-16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4zm7.76-9.64l-1.68 1.69c.84 1.18.84 2.71 0 3.89l1.68 1.69c2.02-2.02 2.02-5.07 0-7.27zM20.07 2l-1.63 1.63c2.77 3.02 2.77 7.56 0 10.74L20.07 16c3.9-3.89 3.91-9.95 0-14z"/>
+        </svg>
+    </div>
+    <h1 class="text-2xl font-semibold mb-6 text-center text-gray-700">HRM Admin Login</h1>
+    <form id="loginForm" class="space-y-4">
+        <p id="message" class="mt-4 text-center text-sm" style="text-align: center"></p>
+        <div>
+            <label for="email" class="block mb-2 text-sm font-medium text-gray-600">Email</label>
+            <input type="email" id="email" name="email" required class="input-field w-full px-4 py-2 rounded-md text-gray-800 focus:outline-none">
+        </div>
+        <div>
+            <label for="password" class="block mb-2 text-sm font-medium text-gray-600">Password</label>
+            <input type="password" id="password" name="password" required class="input-field w-full px-4 py-2 rounded-md text-gray-800 focus:outline-none">
+        </div>
+        <button type="submit" class="login-btn w-full py-2 rounded-md text-white font-medium text-lg focus:outline-none mt-4">Log In</button>
+    </form>
+
+    <p class="mt-6 text-center text-sm text-gray-600">
+        Forgot your password? <a th:href="@{/admin/forgot-password}" class="text-blue-600 hover:underline">Reset here</a>
+    </p>
+</div>
+
+<script>
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        // Get email and password from input fields
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const messageEl = document.getElementById('message');
+        console.log(email +" "+ password)
+
+        // Clear any previous messages
+        messageEl.textContent = '';
+        messageEl.className = '';
+
+        // Prepare headers and body for the request
+        let headersList = {
+            "Accept": "*/*",
+            "User-Agent": "Fire fox (https://www.mozilla.com)"
+        };
+
+        let bodyContent = new FormData();
+        bodyContent.append("email", email);
+        bodyContent.append("password", password);
+
+        try {
+            // Send login request
+            let response = await fetch("/hrm/admin/login", {
+                method: "POST",
+                body: bodyContent,
+                headers: headersList
+            });
+
+            // Parse response data
+            let data = await response.json();
+
+            // Handle the response based on status code
+            if (data.status === 1) {
+                messageEl.textContent = data.message;
+                messageEl.classList.add('success-msg');
+                // Redirect to home page if login is successful
+                window.location.href = "/hrm/admin/home";
+            } else {
+                messageEl.textContent = data.message;
+                messageEl.classList.add('error-msg');
+            }
+
+        } catch (error) {
+            console.error('Error:', error);
+            messageEl.textContent = 'An error occurred. Please try again.';
+            messageEl.classList.add('error-msg');
+        }
+    });
+</script>
+</body>
+</html>

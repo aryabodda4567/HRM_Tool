@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Department | HRM System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            margin: 2rem auto;
+            max-width: 1200px;
+            padding: 2rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s, opacity 0.2s;
+        }
+
+        .btn-primary {
+            background-color: #3b82f6;
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background-color: #2563eb;
+        }
+
+        .btn-secondary {
+            background-color: #d1d5db;
+            color: #000000;
+        }
+
+        .btn-secondary:hover {
+            background-color: #9ca3af;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.25rem;
+            font-size: 1rem;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 0.25rem;
+            margin-top: 1rem;
+        }
+
+        .alert-success {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .alert-error {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+            }
+            .form-col {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body class="p-4">
+<th:block th:replace="header.html"></th:block>
+
+<div class="card">
+    <div class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold">Edit Department</h1>
+        <button id="editBtn" class="btn btn-secondary">Edit</button>
+    </div>
+    <form id="departmentForm" th:object="${departmentModel}" class="space-y-4">
+        <div class="flex flex-wrap -mx-2">
+            <div class="w-full md:w-1/2 px-2 mb-4">
+                <div class="form-group">
+                    <label for="departmentCode" class="form-label">Department Code</label>
+                    <input id="departmentCode" th:field="*{departmentCode}" type="text" class="form-input" readonly>
+                </div>
+            </div>
+            <div class="w-full md:w-1/2 px-2 mb-4">
+                <div class="form-group">
+                    <label for="departmentName" class="form-label">Department Name</label>
+                    <input id="departmentName" th:field="*{departmentName}" type="text" class="form-input" required>
+                </div>
+            </div>
+            <div class="w-full px-2 mb-4">
+                <div class="form-group">
+                    <label for="departmentDescription" class="form-label">Department Description</label>
+                    <textarea id="departmentDescription" th:field="*{departmentDescription}" class="form-input" required></textarea>
+                </div>
+            </div>
+            <div class="w-full md:w-1/2 px-2 mb-4">
+                <div class="form-group">
+                    <label for="employeesCount" class="form-label">Employees Count</label>
+                    <input id="employeesCount" th:field="*{employeesCount}" type="number" class="form-input" required>
+                </div>
+            </div>
+            <div class="w-full md:w-1/2 px-2 mb-4">
+                <div class="form-group">
+                    <label for="departmentBudget" class="form-label">Department Budget</label>
+                    <input id="departmentBudget" th:field="*{departmentBudget}" type="number" step="0.01" class="form-input" required>
+                </div>
+            </div>
+            <div class="w-full md:w-1/2 px-2 mb-4">
+                <div class="form-group">
+                    <label for="isActive" class="form-label">Department Status</label>
+                    <select id="isActive" th:field="*{isActive}" class="form-input" required>
+                        <option value="Active">Active</option>
+                        <option value="In-Active">In-Active</option>
+                    </select>
+                </div>
+            </div>
+            <div class="w-full md:w-1/2 px-2 mb-4">
+                <div class="form-group">
+                    <label for="departmentManagerName" class="form-label">Department Manager Name</label>
+                    <input id="departmentManagerName" th:field="*{departmentManagerName}" type="text" class="form-input" required>
+                </div>
+            </div>
+            <div class="w-full md:w-1/2 px-2 mb-4">
+                <div class="form-group">
+                    <label for="departmentShift" class="form-label">Department Shift</label>
+                    <input id="departmentShift" th:field="*{departmentShift}" type="number" class="form-input" required>
+                </div>
+            </div>
+            <div class="w-full md:w-1/2 px-2 mb-4">
+                <div class="form-group">
+                    <label for="createdDate" class="form-label">Created Date</label>
+                    <input id="createdDate" th:field="*{createdDate}" type="datetime-local" class="form-input" readonly
+                           th:attr="value=${#dates.format(departmentModel.createdDate, 'yyyy-MM-dd''T''HH:mm')}">
+                </div>
+            </div>
+            <div class="w-full md:w-1/2 px-2 mb-4">
+                <div class="form-group">
+                    <label for="modifiedDate" class="form-label">Modified Date</label>
+                    <input id="modifiedDate" th:field="*{modifiedDate}" type="datetime-local" class="form-input" readonly
+                           th:attr="value=${#dates.format(departmentModel.modifiedDate, 'yyyy-MM-dd''T''HH:mm')}">
+                </div>
+            </div>
+        </div>
+
+        <button id="modifyBtn" type="submit" class="btn btn-primary w-full hidden">Modify</button>
+    </form>
+
+    <div id="responseMessage" class="mt-6"></div>
+</div>
+
+<script>
+    const form = document.getElementById('departmentForm');
+    const editBtn = document.getElementById('editBtn');
+    const modifyBtn = document.getElementById('modifyBtn');
+    const responseMessage = document.getElementById('responseMessage');
+    const inputs = form.querySelectorAll('input:not([readonly]), select, textarea');
+
+    // Initially disable all form fields
+    inputs.forEach(input => input.disabled = true);
+
+    editBtn.addEventListener('click', () => {
+        inputs.forEach(input => input.disabled = false);
+        modifyBtn.classList.remove('hidden');
+        editBtn.disabled = true;
+    });
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        // Convert date strings back to ISO format for server
+        if (data.createdDate) {
+            data.createdDate = new Date(data.createdDate).toISOString();
+        }
+        if (data.modifiedDate) {
+            data.modifiedDate = new Date(data.modifiedDate).toISOString();
+        }
+
+        try {
+            const response = await axios.put('/hrm/departments/', data, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            responseMessage.textContent = 'Department updated successfully!';
+            responseMessage.className = 'alert alert-success';
+
+            // Disable inputs and hide modify button after successful update
+            inputs.forEach(input => input.disabled = true);
+            modifyBtn.classList.add('hidden');
+            editBtn.disabled = false;
+        } catch (error) {
+            responseMessage.textContent = 'Error updating department. Please try again.';
+            responseMessage.className = 'alert alert-error';
+        }
+    });
+</script>
+<th:block th:replace="footer.html"></th:block>
+
+</body>
+</html>

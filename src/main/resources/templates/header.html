@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Header</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Dropdown styling */
+        .dropdown {
+            display: none; /* Hidden by default */
+            position: absolute;
+            background-color: white;
+            border: 1px solid #e5e5e5;
+            z-index: 1;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            min-width: 160px;
+            padding: 10px;
+        }
+
+        /* Show dropdown on hover */
+        .nav-item:hover .dropdown {
+            display: block;
+        }
+
+        /* Dropdown item styling */
+        .dropdown-item {
+            padding: 10px 20px;
+            text-align: left;
+            color: #2d3748;
+            cursor: pointer;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f7fafc;
+        }
+
+        /* Logout button styling */
+        .logout-btn {
+            background-color: #e53e3e;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background-color: #c53030;
+        }
+
+        /* Make Navbar sticky */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 50; /* Ensures the navbar is above other elements when scrolling */
+        }
+
+    </style>
+</head>
+<body>
+<!-- Navbar -->
+<nav class="bg-white shadow">
+    <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+        <div class="relative flex items-center justify-between h-16">
+            <div class="flex items-center">
+                <div class="hidden md:block">
+                    <div class="flex space-x-4">
+
+                        <!-- Employees Dropdown -->
+                        <div class="relative nav-item">
+                            <button class="text-gray-700 hover:bg-gray-200 px-3 py-2 rounded-md">Employees</button>
+                            <div class="dropdown">
+                                <div class="dropdown-item" onclick="window.location.href='/hrm/admin/add-employee'">Add Employee</div>
+                                <div class="dropdown-item" onclick="window.location.href='/hrm/admin/view-all-employees'">View All Employees</div>
+                            </div>
+                        </div>
+
+                        <!-- Departments Dropdown -->
+                        <div class="relative nav-item">
+                            <button class="text-gray-700 hover:bg-gray-200 px-3 py-2 rounded-md">Departments</button>
+                            <div class="dropdown">
+                                <div class="dropdown-item" onclick="window.location.href='/hrm/department/view-all-departments'">View All Departments</div>
+                                <div class="dropdown-item" onclick="window.location.href='/hrm/department/'">Add New Department</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- Logout Button -->
+            <div class="flex items-center">
+                <button onclick="window.location.href='/hrm/admin/logout'" class="logout-btn py-2 px-4 rounded-md text-white font-medium text-lg focus:outline-none">Logout</button>
+            </div>
+        </div>
+    </div>
+</nav>
+</body>
+</html>

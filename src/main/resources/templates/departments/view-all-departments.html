@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Departments | HRM System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s, opacity 0.2s;
+        }
+
+        .btn-primary {
+            background-color: #3b82f6;
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background-color: #2563eb;
+        }
+
+        .btn-secondary {
+            background-color: #d1d5db;
+            color: #000000;
+        }
+
+        .btn-secondary:hover {
+            background-color: #9ca3af;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+            }
+            .form-col {
+                width: 100%;
+            }
+        }
+
+        /* Add separation lines between rows */
+        tr {
+            border-bottom: 2px solid #e5e7eb; /* Tailwind gray-300 */
+        }
+
+        tr:last-child {
+            margin: 5px;
+            border-bottom: none; /* Remove the border from the last row */
+        }
+    </style>
+</head>
+<body class="p-4">
+<th:block th:replace="header.html"></th:block>
+
+<div class="card">
+    <h1 class="text-2xl font-bold mb-6">Departments</h1>
+
+    <table class="min-w-full">
+        <thead>
+        <tr class="bg-gray-100">
+            <th class="py-2 px-4 text-left">Department Code</th>
+            <th class="py-2 px-4 text-left">Department Name</th>
+            <th class="py-2 px-4 text-left">Status</th>
+            <th class="py-2 px-4 text-left">Actions</th>
+            <th class="py-2 px-4 text-left">Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="department : ${departmentModelList}">
+            <td class="py-2 px-4 border-b" th:text="${department.departmentCode}"></td>
+            <td class="py-2 px-4 border-b" th:text="${department.departmentName}"></td>
+            <td class="py-2 px-4 border-b" th:text="${department.isActive}"></td>
+            <td class="py-2 px-4 border-b">
+                <a th:href="@{/hrm/department/{departmentCode}(departmentCode=${department.departmentCode})}" class="btn btn-primary">View/Edit</a>
+            </td>
+            <td class="py-2 px-4 border-b">
+                <input type="button" onclick="deleteDepartment(this.name)" th:name="${department.departmentCode}"  value="Delete" class="btn btn-primary" style="background-color: indianred">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<script>
+    async function deleteDepartment(departmentCode) {
+        console.log(departmentCode);
+        let headersList = {
+            "Accept": "application/json"  // Set the correct header to expect JSON
+        };
+
+        // Fetching the department delete API
+        let response = await fetch(`/hrm/departments/?departmentCode=${encodeURIComponent(departmentCode)}`, {
+            method: "DELETE",
+            headers: headersList
+        });
+
+        // Checking if the response is ok
+        if (response.ok) {
+            let data = await response.json(); // Assuming you return JSON from your API
+            console.log(data);
+            // Reload the page or handle the response
+            if (data.status === 1) {
+                location.reload(); // Reload the page on successful deletion
+            } else {
+                alert(data.message); // Show an error message if deletion failed
+            }
+        } else {
+            alert("Failed to delete department. Please try again."); // Handle the error
+        }
+    }
+</script>
+<th:block th:replace="footer.html"></th:block>
+
+</body>
+</html>
